@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarte</title>
+    <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+    <main class="contenedor-pantalla-dividida">
+
+        <section class="seccion-imagen">
+            <!-- pega la imagen aqui we -->
+            <div class="texto-sobre-imagen">
+                <h2>Únete a MedAgenda</h2>
+                <p>La mejor forma de organizar tus consultas.</p>
+            </div>
+        </section>
+
+        <section class="seccion-formulario">
+            <div class="caja-registro">
+                <h1>Registrarse</h1>
+                
+                <form id="registro-form" action="#" method="POST">
+                    
+                    <div class="grupo-input">
+                        <label for="reg-nombre">Nombre Completo:</label>
+                        <input type="text" id="reg-nombre" name="nombre" placeholder="Ej. Juan Pérez" required>
+                    </div>
+
+                    <div class="grupo-input">
+                        <label for="reg-correo">Correo Electrónico:</label>
+                        <input type="email" id="reg-correo" name="correo" placeholder="correo@ejemplo.com" required>
+                    </div>
+
+                    <div class="grupo-input">
+                        <label for="reg-password">Contraseña:</label>
+                        <input type="password" id="reg-password" name="password" placeholder="Crea una contraseña segura" required>
+                    </div>
+
+                    <button type="submit" id="btn-registrar" class="btn-principal">Crear Cuenta</button>
+                </form>
+
+                <div class="separador-social">
+                    <span>O regístrate con</span>
+                </div>
+
+                <div class="opciones-sociales">
+                    <button type="button" class="btn-secundario btn-google"></button>
+                    <button type="button" class="btn-secundario btn-apple"></button>
+                </div>
+
+                <div class="opciones-extra">
+                    <p>¿Ya tienes cuenta? <a href="index.html">Inicia sesión aquí</a></p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>
