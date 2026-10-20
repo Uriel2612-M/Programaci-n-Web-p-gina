@@ -1,0 +1,150 @@
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #f4f7f6;
+}
+
+.slider-bar{
+    width: 250px;
+    background-color: #fcfcfc;
+}
+
+.slider-bar nav{
+    display:flex;
+    flex-direction: column;
+    height: 100%;
+    padding:20px;
+    box-sizing: border-box;
+}
+
+.slider-bar ul{
+    list-style: none;
+    padding:0;
+}
+
+.menu-inferior{
+    margin-top: auto;
+}
+
+.slider-bar a{
+    text-decoration: none;
+    color: #666;
+    font-family: sans-serif;
+    padding: 10px 0;
+    display: block;
+}
+
+.slider-bar a:hover{
+    color: #00cba9;
+}
+.contenido-principal{
+    flex: 1;
+    padding: 20px;
+}
+
+.tarjetas-info{
+    display: flex;
+    gap: 20px;
+    margin-top:20px;
+}
+
+.tarjeta{
+    flex: 1;
+    background-color:#fcfcfc;
+    padding: 20px;
+    border-radius:20%;
+    border:1px solid #dddddd;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+    font-family: sans-serif;
+}
+
+.tarjeta h1{
+    margin:0;
+}
+
+.tarjeta h1:first-child{
+    font-size:14px;
+    color:#666;
+    font-weight: normal;
+}
+
+.tarjeta h1:nth-child(2) {
+    font-size: 36px; 
+    color: #111; 
+    margin-top: 10px; 
+}
+
+.tarjeta p {
+    font-size: 12px; 
+    color: #999; 
+    margin: 5px 0 0 0; 
+}
+
+.tabla{
+    background-color: #ffffff; 
+    padding: 20px;
+    border-radius: 12px; 
+    border: 1px solid #eaeaea; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.03); 
+    margin-top: 20px;
+    font-family: sans-serif;
+}
+
+.encabezado-tabla{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px; 
+}
+
+.encabezado-tabla h2{
+    margin:0;
+    font-size: 18px; 
+    color: #111; 
+}
+
+table {
+    width: 100%; 
+    border-collapse: collapse; 
+}
+
+th, td {
+    padding: 15px 10px; 
+    text-align: left; 
+    border-bottom: 1px solid #eaeaea; 
+    font-size: 20px;
+}
+
+th {
+    color: #888; 
+    font-weight: normal; 
+    font-size: 20px; 
+}
+
+.header-pacientes {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px;
+}
+
+.barra-busqueda {
+    margin-bottom: 20px; 
+}
+
+#input-busqueda {
+    width: 100%; 
+    padding: 12px 15px; 
+    border: 1px solid #e0e0e0; 
+    border-radius: 8px; 
+    font-family: sans-serif;
+    font-size: 14px;
+    box-sizing: border-box; 
+    background-color: #fafafa; 
+}
+
+#input-busqueda:focus {
+    outline: none; 
+    border-color: #00cba9; 
+}
