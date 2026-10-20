@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacientes</title>
+    <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+    <aside class="slider-bar">
+        <nav>
+            <h2> MedAgenda</h2>
+            <h4>Agenda médica</h4>
+
+            <ul class="menu-superior">
+                <li><a href="dashboard.html">Inicio</a></li>
+                <li><a href="pacientes.html">Pacientes</a></li>
+                <li><a href="consultas.html">Consultas</a></li>
+                <li><a href="recetas.html">Recetas</a></li>
+                <li><a href="historial.html">Historial</a></li>
+            </ul>
+            <ul class="menu-inferior">
+                <li><a href="">Configuración</a></li>
+                <li><a href="">Perfil</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="contenido-principal">
+        <header> 
+            <div class="encabezado">
+            <h1>Pacientes</h1>
+            <h3><span id="header-pacientes">Cargando...</span></h3>
+            </div>
+            <button id="btn-agregar-paciente">Agregar Paciente</button>
+        </header>
+
+        <section class="barra-busqueda">
+            <input type="text" id="input-busqueda" placeholder="Buscar paciente...">
+        </section>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Paciente</th>
+                    <th>Edad</th>
+                    <th>Teléfono</th>
+                    <th>Aseguradora</th>
+                    <th>Número de Poliza</th>
+                    <th>Última Consulta</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="table-paciente"></tbody>
+        </table>
+    </main>
+</body>
+</html>

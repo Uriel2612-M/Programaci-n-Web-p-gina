@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas</title>
+    <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+    <aside class="slider-bar">
+        <nav>
+            <h2> MedAgenda</h2>
+            <h4>Agenda médica</h4>
+
+            <ul class="menu-superior">
+                <li><a href="dashboard.html">Inicio</a></li>
+                <li><a href="pacientes.html">Pacientes</a></li>
+                <li><a href="consultas.html">Consultas</a></li>
+                <li><a href="recetas.html">Recetas</a></li>
+                <li><a href="historial.html">Historial</a></li>
+            </ul>
+            <ul class="menu-inferior">
+                <li><a href="">Configuración</a></li>
+                <li><a href="">Perfil</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="contenido-principal">
+        <header class="encabezado-consultas">
+            <div>
+                <h1>Consultas</h1>
+                <h3>Registro y gestión de consultas médicas</h3>
+            </div>
+        </header>
+
+        <div class="contenedor-dos-columnas">
+
+            <section class="formulario-consulta">
+                <h2>NUEVA CONSULTA</h2>
+
+                <form action="#" method="POST">
+
+                    <div class="group-input">
+                        <label for="paciente">Paciente:</label>
+                        <select id="paciente" name="paciente" required>
+                            <option value="">Seleccione un paciente</option>
+                        </select>
+                    </div>
+
+                    <div class="group-input">
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" id="fecha" name="fecha" required>
+                    </div>
+
+                    <div class="group-input">
+                        <label for="hora">Hora:</label>
+                        <input type="time" id="hora" name="hora" required>
+                    </div>
+
+                    <div class="group-input">
+                        <label for="motivo">Motivo de la consulta:</label>
+                        <input type="text" id="motivo" placeholder="Ej. dolor de cabeza"></input>
+                    </div>
+
+                    <div class="group-input">
+                        <label for="diagnostico">Diagnóstico:</label>
+                        <input type="text" id="diagnostico" placeholder="Diagnóstico"></input>
+                    </div>
+
+                    <div class="group-input">
+                        <label for="notas">Notas clínicas:</label>
+                        <textarea id="notas" name="notas" rows="4" placeholder="Observaciones, indicaciones adicionales...."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-principal">Registrar Consulta</button>
+
+                </form>
+            </section>
+
+            <section class="tarjeta-historial">
+                <h2>CONSULTAS RECIENTES</h2>
+                <div class="lista-consultas">
+                    <div class="item-consulta">
+                        <div class="info-paciente">
+                            <div class="avatar">AH</div>
+                            <div>
+                                <h4>Ana Sofía Herrera</h4>
+                                <p>Revisión ginecológica anual</p>
+                                <p class="subtexto">Sin hallazgos relevantes</p>
+                            </div>
+                        </div>
+                        <div class="estado-consulta">
+                            <span class="fecha">2026-09-09</span>
+                            <span class="etiqueta pendiente">Pendiente</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
