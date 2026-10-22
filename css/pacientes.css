@@ -1,0 +1,71 @@
+.encabezado-pacientes {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#btn-agregar-paciente {
+    padding: 10px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    background-color: var(--teal);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#btn-agregar-paciente:hover {
+    background-color: var(--teal-oscuro);
+}
+
+
+
+
+
+
+
+
+
+.tarjeta-tabla {
+    padding: 18px 20px;
+    background-color: white;
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+}
+
+#input-busqueda {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+}
+
+#input-busqueda:focus {
+    outline: none;
+    border-color: var(--teal);
+}
+
+.btn-ver,
+.btn-editar {
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-ver {
+    color: white;
+    background-color: var(--teal);
+    border: 1px solid var(--teal);
+}
+
+.btn-editar {
+    margin-left: 4px;
+    color: var(--texto);
+    background-color: white;
+    border: 1px solid var(--borde);
+}

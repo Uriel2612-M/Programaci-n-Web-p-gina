@@ -1,0 +1,84 @@
+.dos-columnas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.caja {
+    padding: 22px;
+    background-color: white;
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+}
+
+.caja h2 {
+    margin: 0 0 18px 0;
+    font-size: 20px;
+}
+
+
+
+
+
+
+.group-input {
+    margin-bottom: 14px;
+}
+
+.group-input label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.group-input input,
+.group-input select,
+.group-input textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    font-size: 13px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+}
+
+.group-input input:focus,
+.group-input select:focus,
+.group-input textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+}
+
+.group-input textarea {
+    resize: vertical;
+}
+
+
+
+
+
+
+.item-consulta {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #eef1f0;
+}
+
+.info-paciente h4 {
+    margin: 0;
+    font-size: 14px;
+}
+
+.info-paciente p {
+    margin: 3px 0 0 0;
+    font-size: 12px;
+}
+
+.estado-consulta .fecha {
+    margin-right: 10px;
+    font-size: 11px;
+    color: var(--texto-suave);
+}

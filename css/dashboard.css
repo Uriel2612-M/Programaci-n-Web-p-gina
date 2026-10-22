@@ -1,0 +1,110 @@
+.tarjetas-info {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.tarjeta {
+    position: relative;
+    padding: 18px 20px;
+    background-color: white;
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+}
+
+.tarjeta .titulo {
+    margin: 0;
+    font-size: 12px;
+    color: var(--texto-suave);
+}
+
+.tarjeta .numero {
+    margin: 14px 0 0 0;
+    font-size: 32px;
+}
+
+.tarjeta .detalle {
+    min-height: 1em;
+    margin: 6px 0 0 0;
+    font-size: 11px;
+    color: var(--texto-suave);
+}
+
+
+
+
+
+.icono-tarjeta {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: var(--teal-suave);
+    border-radius: 8px;
+}
+
+
+
+.icono-tarjeta.rojo {
+    background-color: #fde8ec;
+}
+
+.icono-tarjeta img {
+    width: 16px;
+    height: 16px;
+}
+
+
+
+
+
+
+
+
+
+.tabla {
+    margin-top: 20px;
+    padding: 22px;
+    background-color: white;
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+}
+
+.encabezado-tabla {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.encabezado-tabla h2 {
+    margin: 0;
+    font-size: 16px;
+}
+
+#btn-ver-todos {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal-oscuro);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-detalle {
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--teal-oscuro);
+    background-color: white;
+    border: 1px solid var(--teal);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-detalle:hover {
+    background-color: var(--teal-suave);
+}
