@@ -31,9 +31,6 @@
 }
 
 
-
-
-
 .icono-tarjeta {
     position: absolute;
     top: 16px;
@@ -47,8 +44,6 @@
     border-radius: 8px;
 }
 
-
-
 .icono-tarjeta.rojo {
     background-color: #fde8ec;
 }
@@ -57,14 +52,6 @@
     width: 16px;
     height: 16px;
 }
-
-
-
-
-
-
-
-
 
 .tabla {
     margin-top: 20px;

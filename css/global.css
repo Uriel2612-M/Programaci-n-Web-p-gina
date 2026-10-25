@@ -23,16 +23,6 @@ input, select, textarea, button {
     font-family: inherit;
 }
 
-
-
-
-
-
-
-
-
-
-
 .slider-bar {
     width: 220px;
     background-color: #fcfcfc;
@@ -78,10 +68,9 @@ input, select, textarea, button {
     margin: 0;
 }
 
-
-
-
-
+.menu-superior{
+    flex:1;
+}
 .menu-inferior {
     margin-top: auto;
 }
@@ -108,12 +97,6 @@ input, select, textarea, button {
     color: var(--teal-oscuro);
     background-color: var(--teal-suave);
 }
-
-
-
-
-
-
 
 .contenido-principal {
     flex: 1;
@@ -150,11 +133,6 @@ th {
     font-weight: 400;
     font-size: 11px;
 }
-
-
-
-
-
 
 .btn-principal {
     width: 100%;
@@ -204,12 +182,6 @@ th {
     color: #1f9e8f;
     background-color: #e0f5f2;
 }
-
-
-
-
-
-
 
 .celda-paciente .nombre {
     display: inline-block;

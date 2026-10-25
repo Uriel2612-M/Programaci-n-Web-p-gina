@@ -1,50 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultas</title>
     <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/consultas.css">
 </head>
 <body>
     <aside class="slider-bar">
         <nav>
-            <h2> MedAgenda</h2>
-            <h4>Agenda médica</h4>
+            <div class="marca">
+                <img src="img/logo.png" alt="Logo MedAgenda">
+                <div>
+                    <h2>MedAgenda</h2>
+                    <h4>Agenda médica</h4>
+                </div>
+            </div>
 
             <ul class="menu-superior">
-                <li><a href="dashboard.html">Inicio</a></li>
-                <li><a href="pacientes.html">Pacientes</a></li>
-                <li><a href="consultas.html">Consultas</a></li>
-                <li><a href="recetas.html">Recetas</a></li>
-                <li><a href="historial.html">Historial</a></li>
+                <li><a href="dashboard.html"><img src="img/icono-dashboard.svg" alt="">Inicio</a></li>
+                <li><a href="pacientes.html"><img src="img/icono-pacientes.svg" alt="">Pacientes</a></li>
+                <li><a href="consultas.html" class="activo"><img src="img/icono-consultas.svg" alt="">Consultas</a></li>
+                <li><a href="recetas.html"><img src="img/icono-recetas.svg" alt="">Recetas</a></li>
+                <li><a href="historial.html"><img src="img/icono-historial.svg" alt="">Historial</a></li>
             </ul>
             <ul class="menu-inferior">
-                <li><a href="">Configuración</a></li>
-                <li><a href="">Perfil</a></li>
+                <li><a href="configuracion.html"><img src="img/icono-configuracion.svg" alt="">Configuración</a></li>
+                <li><a href="perfil.html"><img src="img/icono-perfil.svg" alt="">Perfil</a></li>
             </ul>
         </nav>
     </aside>
 
     <main class="contenido-principal">
-        <header class="encabezado-consultas">
-            <div>
-                <h1>Consultas</h1>
-                <h3>Registro y gestión de consultas médicas</h3>
-            </div>
+        <header>
+            <h1>Consultas</h1>
+            <h3>Registro y gestión de consultas médicas</h3>
         </header>
 
-        <div class="contenedor-dos-columnas">
+        <div class="dos-columnas">
 
-            <section class="formulario-consulta">
-                <h2>NUEVA CONSULTA</h2>
+            <section class="caja formulario-consulta">
+                <h2>Nueva consulta</h2>
 
                 <form action="#" method="POST">
-
                     <div class="group-input">
                         <label for="paciente">Paciente:</label>
                         <select id="paciente" name="paciente" required>
                             <option value="">Seleccione un paciente</option>
+
+                            
+                            
                         </select>
                     </div>
 
@@ -60,42 +66,26 @@
 
                     <div class="group-input">
                         <label for="motivo">Motivo de la consulta:</label>
-                        <input type="text" id="motivo" placeholder="Ej. dolor de cabeza"></input>
+                        <input type="text" id="motivo" name="motivo" placeholder="Ej. dolor de cabeza">
                     </div>
 
                     <div class="group-input">
                         <label for="diagnostico">Diagnóstico:</label>
-                        <input type="text" id="diagnostico" placeholder="Diagnóstico"></input>
+                        <input type="text" id="diagnostico" name="diagnostico" placeholder="Diagnóstico">
                     </div>
 
                     <div class="group-input">
                         <label for="notas">Notas clínicas:</label>
-                        <textarea id="notas" name="notas" rows="4" placeholder="Observaciones, indicaciones adicionales...."></textarea>
+                        <textarea id="notas" name="notas" rows="4" placeholder="Observaciones, indicaciones adicionales..."></textarea>
                     </div>
 
                     <button type="submit" class="btn-principal">Registrar Consulta</button>
-
                 </form>
             </section>
 
-            <section class="tarjeta-historial">
-                <h2>CONSULTAS RECIENTES</h2>
-                <div class="lista-consultas">
-                    <div class="item-consulta">
-                        <div class="info-paciente">
-                            <div class="avatar">AH</div>
-                            <div>
-                                <h4>Ana Sofía Herrera</h4>
-                                <p>Revisión ginecológica anual</p>
-                                <p class="subtexto">Sin hallazgos relevantes</p>
-                            </div>
-                        </div>
-                        <div class="estado-consulta">
-                            <span class="fecha">2026-09-09</span>
-                            <span class="etiqueta pendiente">Pendiente</span>
-                        </div>
-                    </div>
-                </div>
+            <section class="caja">
+                <h2>Consultas recientes</h2>
+                <div id="lista-consultas"></div>
             </section>
         </div>
     </main>

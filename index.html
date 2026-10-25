@@ -1,29 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de Sesión</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body class="login-body">
     <main class="login-container">
-        <div class="logo-contenedor">
-            <img src="ruta-a-tu-logo.png" alt="Logo MedAgenda" class="logo-circulo">
-        </div>
+        <img src="img/logo.png" alt="Logo MedAgenda" class="logo-login">
 
         <h1>MedAgenda</h1>
         <h2>Iniciar Sesión</h2>
+
         <form id="login-form">
             <div class="input-group">
+                <label for="login-rol">Rol:</label>
                 <select id="login-rol" required>
-                    <option value="" disabled selected>Selecciona tu rol </option>
+                    <option value="" disabled selected>Selecciona tu rol</option>
                     <option value="1">Doctor</option>
                     <option value="2">Paciente</option>
                 </select>
             </div>
 
             <div class="input-group">
-                <label for="login-usuario"> Nombre de Usuario:</label>
+                <label for="login-usuario">Nombre de Usuario:</label>
                 <input type="text" id="login-usuario" required>
             </div>
 
@@ -31,12 +33,11 @@
                 <label for="login-password">Contraseña:</label>
                 <input type="password" id="login-password" required>
             </div>
-            <button id="btn-login"> Iniciar Sesión </button>
+
+            <button type="submit" id="btn-login">Iniciar Sesión</button>
         </form>
 
-        <div class="opciones-extra">
-            <a href="registro.html">¿No tienes cuenta? Regístrate</a>
-        </div>
+        <p class="opciones-extra"><a href="registro.html">¿No tienes cuenta? Regístrate</a></p>
     </main>
 </body>
 </html>

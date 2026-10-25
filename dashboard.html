@@ -1,78 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
     <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
     <aside class="slider-bar">
         <nav>
-            <h2> MedAgenda</h2>
-            <h4>Agenda médica</h4>
+            <div class="marca">
+                <img src="img/logo.png" alt="Logo MedAgenda">
+                <div>
+                    <h2>MedAgenda</h2>
+                    <h4>Agenda médica</h4>
+                </div>
+            </div>
 
             <ul class="menu-superior">
-                <li><a href="dashboard.html">Inicio</a></li>
-                <li><a href="pacientes.html">Pacientes</a></li>
-                <li><a href="consultas.html">Consultas</a></li>
-                <li><a href="recetas.html">Recetas</a></li>
-                <li><a href="historial.html">Historial</a></li>
+                <li><a href="dashboard.html" class="activo"><img src="img/icono-dashboard.svg" alt="">Inicio</a></li>
+                <li><a href="pacientes.html"><img src="img/icono-pacientes.svg" alt="">Pacientes</a></li>
+                <li><a href="consultas.html"><img src="img/icono-consultas.svg" alt="">Consultas</a></li>
+                <li><a href="recetas.html"><img src="img/icono-recetas.svg" alt="">Recetas</a></li>
+                <li><a href="historial.html"><img src="img/icono-historial.svg" alt="">Historial</a></li>
             </ul>
             <ul class="menu-inferior">
-                <li><a href="">Configuración</a></li>
-                <li><a href="">Perfil</a></li>
+                <li><a href="configuracion.html"><img src="img/icono-configuracion.svg" alt="">Configuración</a></li>
+                <li><a href="perfil.html"><img src="img/icono-perfil.svg" alt="">Perfil</a></li>
             </ul>
         </nav>
     </aside>
+    
     <main class="contenido-principal">
-        <header> 
-            <h1>Bienvenido <span id="header-name">Cargando...</span></h1>
-            <h3><span id="header-fecha">Cargando...</span></h3>
+        <header>
+            <h1><span id="saludo"></span><span id="header-name"></span></h1>
+            <h3 id="header-fecha"></h3>
         </header>
 
-        <section class="resumen-dashboard">
-            <div class="tarjetas-info">
-                <div class="tarjeta">
-                    <h1>Total de Pacientes</h1>
-                    <h1 id="dash-paciente">0</h1>
-                    <p></p>
-                </div>
-                <div class="tarjeta">
-                    <h1>Consultas Hoy</h1>
-                    <h1 id="dash-consultas">0</h1>
-                    <p></p>
-                </div>
-                <div class="tarjeta">
-                    <h1>Recetas este mes</h1>
-                    <h1 id="dash-recetas">0</h1>
-                    <p></p>
-                </div>
-                <div class="tarjeta">
-                    <h1>Casos Pendientes</h1>
-                    <h1 id="dash-pendientes">0</h1>
-                    <p></p>
-                </div>
+        <section class="tarjetas-info">
+            <div class="tarjeta">
+                <span class="icono-tarjeta"><img src="img/tarjeta-pacientes.svg" alt=""></span>
+                <p class="titulo">Total de Pacientes</p>
+                <h2 class="numero" id="dash-paciente">0</h2>
+                <p class="detalle" id="dash-paciente-detalle"></p>
+            </div>
+            <div class="tarjeta">
+                <span class="icono-tarjeta"><img src="img/tarjeta-consultas.svg" alt=""></span>
+                <p class="titulo">Consultas Hoy</p>
+                <h2 class="numero" id="dash-consultas">0</h2>
+                <p class="detalle" id="dash-consultas-detalle"></p>
+            </div>
+            <div class="tarjeta">
+                <span class="icono-tarjeta"><img src="img/tarjeta-recetas.svg" alt=""></span>
+                <p class="titulo">Recetas este mes</p>
+                <h2 class="numero" id="dash-recetas">0</h2>
+                <p class="detalle" id="dash-recetas-detalle"></p>
+            </div>
+            <div class="tarjeta">
+                <span class="icono-tarjeta rojo"><img src="img/tarjeta-pendientes.svg" alt=""></span>
+                <p class="titulo">Casos Pendientes</p>
+                <h2 class="numero" id="dash-pendientes">0</h2>
+                <p class="detalle" id="dash-pendientes-detalle"></p>
             </div>
         </section>
-    <section class="tabla">
-        <div class=encabezado-tabla>
-            <h1>Pacientes recientes</h1>
-            <button id="btn-ver-todos" onclick="window.location.href='pacientes.html'">Ver todos ></button>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Paciente</th>
-                    <th>Aseguradora</th>
-                    <th>Última Consulta</th>
-                    <th>Estado</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="table-resumen"></tbody>
-        </table>
-    </section>
+
+        <section class="tabla">
+            <div class="encabezado-tabla">
+                <h2>Pacientes recientes</h2>
+                <button id="btn-ver-todos" onclick="window.location.href='pacientes.html'">Ver todos ></button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Aseguradora</th>
+                        <th>Última Consulta</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="table-resumen"></tbody>
+            </table>
+        </section>
     </main>
+    <script src="js/fecha.js"></script>
 </body>
 </html>
