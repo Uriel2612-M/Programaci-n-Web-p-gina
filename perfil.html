@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi perfil</title>
+    <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+    <aside class="slider-bar">
+        <nav>
+            <h2> MedAgenda</h2>
+            <h4>Agenda médica</h4>
+
+            <ul class="menu-superior">
+                <li><a href="dashboard.html">Inicio</a></li>
+                <li><a href="pacientes.html">Pacientes</a></li>
+                <li><a href="consultas.html">Consultas</a></li>
+                <li><a href="recetas.html">Recetas</a></li>
+                <li><a href="historial.html">Historial</a></li>
+            </ul>
+            <ul class="menu-inferior">
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="contenido-principal">       
+        <header class="header-perfil">
+            <div>
+                <h1>Mi Perfil</h1>
+                <h3>Administración de tu cuenta y seguridad</h3>
+            </div>
+        </header>
+
+        <div class="contenedor-dos-columnas">
+            
+            <section class="tarjeta-formulario">
+                         
+                <div class="seccion-avatar" >                    
+                    <div class="avatar">RC</div>
+                    <div>
+                        <h2>Dr. Ramón Castillo</h2>
+                        <button type="button" class="btn-secundario">Cambiar foto</button>
+                    </div>
+                </div>
+
+                <form id="form-perfil" action="#" method="POST">
+                    
+                    <div class="grupo-input">
+                        <label for="perfil-nombre">Nombre Completo</label>
+                        <input type="text" id="perfil-nombre" required>
+                    </div>
+
+                    <div class="grupo-input">
+                        <label for="perfil-correo">Correo Electrónico (Usuario)</label>
+                        <input type="email" id="perfil-correo" required>
+                    </div>
+
+                    <div class="flex-fila">
+                        <div class="grupo-input">
+                            <label for="perfil-rol">Rol del Sistema</label>                           
+                            <input type="text" id="perfil-rol">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-principal">Actualizar Perfil</button>
+                </form>
+            </section>
+
+            <section class="tarjeta-formulario">
+                <h2>Seguridad</h2>
+                <form id="form-password" action="#" method="POST">
+                    
+                    <div class="grupo-input">
+                        <label for="pass-actual">Contraseña Actual</label>
+                        <input type="password" id="pass-actual" name="password_actual" placeholder="Ingresa tu contraseña actual" required>
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid var(--borde); margin: 20px 0;">
+
+                    <div class="grupo-input">
+                        <label for="pass-nueva">Nueva Contraseña</label>
+                        <input type="password" id="pass-nueva" name="password_nueva" placeholder="Mínimo 8 caracteres" required>
+                    </div>
+
+                    <div class="grupo-input">
+                        <label for="pass-confirmar">Confirmar Nueva Contraseña</label>
+                        <input type="password" id="pass-confirmar" name="password_confirmar" placeholder="Vuelve a escribir la nueva contraseña" required>
+                    </div>
+
+                    <button type="submit" class="btn-principal">Cambiar Contraseña</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+</body>
+</html>

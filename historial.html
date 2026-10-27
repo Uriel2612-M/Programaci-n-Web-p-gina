@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial Clínico</title>
+    <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+    <aside class="slider-bar">
+        <nav>
+            <h2> MedAgenda</h2>
+            <h4>Agenda médica</h4>
+
+            <ul class="menu-superior">
+                <li><a href="dashboard.html">Inicio</a></li>
+                <li><a href="pacientes.html">Pacientes</a></li>
+                <li><a href="consultas.html">Consultas</a></li>
+                <li><a href="recetas.html">Recetas</a></li>
+                <li><a href="historial.html">Historial</a></li>
+            </ul>
+            <ul class="menu-inferior">
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main class="contenido-principal">
+        <header class="header-historial">
+            <div>
+                <h1>Historial Clínico</h1>
+                <h3>Registro cronológico de todas las consultas</h3>
+            </div>
+        </header>
+
+        <section class="tarjeta" style="padding: 0;"> 
+            
+            <div class="lista-historial">
+                
+                <div class="item-historial">
+                    <div class="col-fecha">
+                        <span class="punto-timeline rojo"></span>
+                        <span class="fecha-texto">2026-09-09</span>
+                    </div>
+                    
+                    <div class="col-detalles">
+                        <div class="paciente-header">
+                            <div class="avatar">AH</div>
+                            <h4>Ana Sofía Herrera <span class="texto-suave">· GNP Salud</span></h4>
+                        </div>
+                        <div class="consulta-info">
+                            <h5>Revisión ginecológica anual</h5>
+                            <p>Diagnóstico: Sin hallazgos relevantes</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-estado">
+                        <span class="etiqueta pendiente">Pendiente</span>
+                    </div>
+                </div>
+
+                <div class="item-historial">
+                    <div class="col-fecha">
+                        <span class="punto-timeline verde"></span>
+                        <span class="fecha-texto">2026-09-08</span>
+                    </div>
+                    
+                    <div class="col-detalles">
+                        <div class="paciente-header">
+                            <div class="avatar">CM</div>
+                            <h4>Carlos Mendoza Ruiz <span class="texto-suave">· ISSSTE</span></h4>
+                        </div>
+                        <div class="consulta-info">
+                            <h5>Control de hipertensión</h5>
+                            <p>Diagnóstico: Hipertensión arterial estadio 2</p>
+                            
+                            <div class="receta-tags">
+                                <span class="label-receta">Receta:</span>
+                                <span class="pill-medicamento">Amlodipino</span>
+                                <span class="pill-medicamento">Losartán</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-estado">
+                        <span class="etiqueta completada">Completada</span>
+                    </div>
+                </div>
+
+                <div class="item-historial">
+                    <div class="col-fecha">
+                        <span class="punto-timeline verde"></span>
+                        <span class="fecha-texto">2026-09-07</span>
+                    </div>
+                    
+                    <div class="col-detalles">
+                        <div class="paciente-header">
+                            <div class="avatar">JR</div>
+                            <h4>Jorge Ramírez Castillo <span class="texto-suave">· Metlife</span></h4>
+                        </div>
+                        <div class="consulta-info">
+                            <h5>Chequeo general</h5>
+                            <p>Diagnóstico: Prediabetes</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-estado">
+                        <span class="etiqueta completada">Completada</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+</body>
+</html>
