@@ -1,9 +1,20 @@
+body {
+    height: auto;
+    min-height: 100vh;
+}
+
+ 
 .contenedor-pantalla-dividida {
     display: flex;
     flex: 1;
+    min-height: 100vh;
 }
+ 
 
+ 
 .seccion-imagen {
+    position: relative;
+    overflow: hidden;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -12,34 +23,49 @@
     color: white;
     background: linear-gradient(135deg, var(--teal), var(--teal-oscuro));
 }
+ 
 
-.grupo-input input,
-.grupo-input select {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 11px 14px;
-    font-size: 13px;
-    border: 1px solid var(--borde);
-    border-radius: 10px;
+.seccion-imagen::before {
+    content: "";
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 280px;
+    height: 280px;
+    background-color: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
 }
-
-.grupo-input input:focus,
-.grupo-input select:focus {
-    outline: none;
-    border-color: var(--teal);
+ 
+.seccion-imagen::after {
+    content: "";
+    position: absolute;
+    bottom: -100px;
+    left: -60px;
+    width: 320px;
+    height: 320px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
 }
-
+ 
+.texto-sobre-imagen {
+    position: relative;
+    z-index: 1;
+    max-width: 380px;
+}
+ 
 .texto-sobre-imagen h2 {
-    margin: 0 0 10px 0;
-    font-size: 32px;
+    margin: 0 0 12px 0;
+    font-size: 36px;
 }
-
+ 
 .texto-sobre-imagen p {
     margin: 0;
-    font-size: 15px;
+    font-size: 16px;
+    line-height: 1.5;
 }
+ 
 
-/* lado derecho */
+ 
 .seccion-formulario {
     flex: 1;
     display: flex;
@@ -48,103 +74,125 @@
     padding: 32px;
     background-color: white;
 }
-
+ 
 .caja-registro {
     width: 100%;
     max-width: 380px;
 }
-
+ 
 .caja-registro h1 {
     margin: 0 0 24px 0;
     font-size: 26px;
     text-align: center;
 }
-
+ 
 .grupo-input {
     margin-bottom: 14px;
 }
-
+ 
 .grupo-input label {
     display: block;
     margin-bottom: 6px;
     font-size: 12px;
     font-weight: 600;
 }
-
-.grupo-input input {
+ 
+.grupo-input input,
+.grupo-input select {
     width: 100%;
     box-sizing: border-box;
     padding: 11px 14px;
     font-size: 13px;
+    background-color: white;
     border: 1px solid var(--borde);
     border-radius: 10px;
 }
-
-.grupo-input input:focus {
+ 
+.grupo-input input:focus,
+.grupo-input select:focus {
     outline: none;
     border-color: var(--teal);
 }
+ 
+#btn-registrar {
+    margin-top: 6px;
+    border-radius: 10px;
+}
 
+
+ 
 .separador-social {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     margin: 22px 0 16px 0;
     font-size: 12px;
-    text-align: center;
     color: var(--texto-suave);
 }
 
+
+.separador-social::before,
+.separador-social::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: var(--borde);
+}
+ 
 .opciones-sociales {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-
+ 
 .btn-secundario {
     width: 100%;
     padding: 11px;
     font-size: 13px;
     font-weight: 600;
+    color: var(--texto);
     background-color: white;
     border: 1px solid var(--borde);
     border-radius: 10px;
     cursor: pointer;
 }
-
+ 
 .btn-secundario:hover {
     background-color: var(--fondo);
 }
-
+ 
 .opciones-extra {
     margin-top: 22px;
     text-align: center;
     font-size: 13px;
     color: var(--texto-suave);
 }
-
+ 
 .opciones-extra p {
     margin: 0;
 }
-
+ 
 .opciones-extra a {
     color: var(--teal-oscuro);
     font-weight: 600;
     text-decoration: none;
 }
+ 
 
-/* Fondo oscuro semitransparente que bloquea la pantalla trasera */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Negro al 50% de opacidad */
-    display: flex; /* Centra el contenido internamente cuando JS le quite el 'display: none' */
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000; /* Asegura que el modal quede por encima de todo el HTML */
+    z-index: 1000;
 }
+ 
 
-/* La tarjeta blanca del mensaje */
 .modal-contenido {
     background-color: white;
     padding: 30px;
@@ -152,24 +200,31 @@
     text-align: center;
     max-width: 350px;
     width: 90%;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
-
+ 
 .modal-icono {
-    font-size: 40px;
-    color: var(--teal);
     margin-bottom: 10px;
+    font-size: 40px;
     font-weight: bold;
+    color: var(--teal);
 }
-
+ 
 .modal-contenido h2 {
     margin: 0 0 10px 0;
-    color: var(--texto);
     font-size: 20px;
 }
-
+ 
 .modal-contenido p {
-    color: var(--texto-suave);
     margin-bottom: 20px;
     font-size: 14px;
+    color: var(--texto-suave);
+}
+ 
+
+ 
+@media (max-width: 800px) {
+    .seccion-imagen {
+        display: none;
+    }
 }

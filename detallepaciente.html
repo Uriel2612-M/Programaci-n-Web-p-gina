@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del paciente</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/detallepaciente.css">
+</head>
+<body>
+    <aside class="slider-bar">
+        <nav>
+            <div class="marca">
+                <img src="img/logo.png" alt="Logo MedAgenda">
+                <div>
+                    <h2>MedAgenda</h2>
+                    <h4>Agenda médica</h4>
+                </div>
+            </div>
+
+            <ul class="menu-superior">
+                <li><a href="dashboard.html"><img src="img/icono-dashboard.svg" alt="">Inicio</a></li>
+                <li><a href="pacientes.html" class="activo"><img src="img/icono-pacientes.svg" alt="">Pacientes</a></li>
+                <li><a href="consultas.html"><img src="img/icono-consultas.svg" alt="">Consultas</a></li>
+                <li><a href="recetas.html"><img src="img/icono-recetas.svg" alt="">Recetas</a></li>
+                <li><a href="historial.html"><img src="img/icono-historial.svg" alt="">Historial</a></li>
+            </ul>
+            <ul class="menu-inferior">
+                <li><a href="configuracion.html"><img src="img/icono-configuracion.svg" alt="">Configuración</a></li>
+                <li><a href="perfil.html"><img src="img/icono-perfil.svg" alt="">Perfil</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="contenido-principal">
+
+  
+        <p class="migas">
+            <a href="pacientes.html">Pacientes</a>
+            <span class="separador">&gt;</span>
+            <span class="actual" id="migas-nombre"></span>
+        </p>
+
+        <section class="ficha-paciente">
+            <div class="avatar" id="det-avatar"></div>
+
+            <div class="ficha-info">
+                <div class="ficha-titulo">
+                    <div>
+                        <h1 id="det-nombre"></h1>
+                        <p id="det-resumen"></p>
+                    </div>
+                    <a href="consultas.html" class="btn-nueva-consulta" id="btn-nueva-consulta">+ Nueva consulta</a>
+                </div>
+
+                <div class="datos-paciente">
+                    <div class="dato">
+                        <span>Teléfono</span>
+                        <p id="det-telefono"></p>
+                    </div>
+                    <div class="dato">
+                        <span>Email</span>
+                        <p id="det-email"></p>
+                    </div>
+                    <div class="dato">
+                        <span>Dirección</span>
+                        <p id="det-direccion"></p>
+                    </div>
+                    <div class="dato">
+                        <span>Aseguradora</span>
+                        <p id="det-aseguradora"></p>
+                    </div>
+                    <div class="dato">
+                        <span>No. Póliza</span>
+                        <p id="det-poliza"></p>
+                    </div>
+                    <div class="dato">
+                        <span>Última visita</span>
+                        <p id="det-visita"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tarjeta-tabs">
+            <div class="barra-tabs">
+                <button type="button" class="tab activa" data-panel="panel-consultas">
+                    Consultas <span class="contador" id="contador-consultas">0</span>
+                </button>
+                <button type="button" class="tab" data-panel="panel-recetas">
+                    Recetas <span class="contador" id="contador-recetas">0</span>
+                </button>
+            </div>
+
+   
+            <div class="panel-tab" id="panel-consultas">
+                <div id="lista-consultas-paciente"></div>
+
+          
+            </div>
+
+      
+            <div class="panel-tab oculto" id="panel-recetas">
+                <div id="lista-recetas-paciente"></div>
+
+        
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/detalle-paciente.js"></script>
+</body>
+</html>

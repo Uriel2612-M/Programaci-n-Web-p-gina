@@ -1,0 +1,108 @@
+.tarjeta {
+    background-color: white;
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+}
+ 
+
+.item-historial {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 22px 24px;
+    border-bottom: 1px solid #eef1f0;
+}
+ 
+.item-historial:last-child {
+    border-bottom: none;
+}
+
+ 
+.col-fecha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 90px;
+}
+ 
+.punto-timeline {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+ 
+.punto-timeline.verde {
+    background-color: var(--teal);
+}
+ 
+.punto-timeline.rojo {
+    background-color: #d6455d;
+}
+ 
+.fecha-texto {
+    font-size: 12px;
+    color: var(--texto-suave);
+}
+ 
+ 
+.col-detalles {
+    flex: 1;
+}
+ 
+.paciente-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+ 
+.paciente-header h4 {
+    margin: 0;
+    font-size: 14px;
+}
+ 
+.texto-suave {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--texto-suave);
+}
+ 
+.consulta-info h5 {
+    margin: 0;
+    font-size: 14px;
+}
+ 
+.consulta-info p {
+    margin: 3px 0 0 0;
+    font-size: 12px;
+    color: #5a6c68;
+}
+ 
+
+ 
+.receta-tags {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+}
+ 
+.label-receta {
+    font-size: 12px;
+    color: #5a6c68;
+}
+ 
+.pill-medicamento {
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1f9e8f;
+    background-color: #e0f5f2;
+    border-radius: 999px;
+}
+ 
+
+ 
+.col-estado {
+    text-align: right;
+}

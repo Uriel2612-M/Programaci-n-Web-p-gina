@@ -1,117 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recetas</title>
     <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/recetas.css">
 </head>
 <body>
     <aside class="slider-bar">
         <nav>
-            <h2> MedAgenda</h2>
-            <h4>Agenda médica</h4>
+            <div class="marca">
+                <img src="img/logo.png" alt="Logo MedAgenda">
+                <div>
+                    <h2>MedAgenda</h2>
+                    <h4>Agenda médica</h4>
+                </div>
+            </div>
 
             <ul class="menu-superior">
-                <li><a href="dashboard.html">Inicio</a></li>
-                <li><a href="pacientes.html">Pacientes</a></li>
-                <li><a href="consultas.html">Consultas</a></li>
-                <li><a href="recetas.html">Recetas</a></li>
-                <li><a href="historial.html">Historial</a></li>
+                <li><a href="dashboard.html"><img src="img/icono-dashboard.svg" alt="">Inicio</a></li>
+                <li><a href="pacientes.html"><img src="img/icono-pacientes.svg" alt="">Pacientes</a></li>
+                <li><a href="consultas.html"><img src="img/icono-consultas.svg" alt="">Consultas</a></li>
+                <li><a href="recetas.html" class="activo"><img src="img/icono-recetas.svg" alt="">Recetas</a></li>
+                <li><a href="historial.html"><img src="img/icono-historial.svg" alt="">Historial</a></li>
             </ul>
             <ul class="menu-inferior">
-                <li><a href="configuracion.html">Configuración</a></li>
-                <li><a href="perfil.html">Perfil</a></li>
+                <li><a href="configuracion.html"><img src="img/icono-configuracion.svg" alt="">Configuración</a></li>
+                <li><a href="perfil.html"><img src="img/icono-perfil.svg" alt="">Perfil</a></li>
             </ul>
         </nav>
     </aside>
+
     <main class="contenido-principal">
-        <header> 
+        <header>
             <h1>Recetas</h1>
-            <h3><span id="header-fecha">Cargando...</span></h3>
+            <h3>Emisión y seguimiento de recetas médicas</h3>
         </header>
 
         <div class="contenedor-dos-columnas">
 
             <section class="formulario-consulta">
-                <h2>NUEVA RECETA</h2>
+                <h2>Nueva Receta</h2>
 
                 <form action="#" method="POST">
 
                     <div class="group-input">
-                        <label for="paciente">Paciente:</label>
+                        <label for="paciente">Paciente</label>
                         <select id="paciente" name="paciente" required>
-                            <option value="">Seleccione un paciente</option>
+                            <option value="">Seleccionar paciente...</option>
                         </select>
                     </div>
 
                     <div class="group-input">
-                        <label for="consulta">Consulta asociada:</label>
+                        <label for="consulta">Consulta asociada</label>
                         <select id="consulta" name="consulta" required>
-                            <option value="">Seleccione una consulta</option>
+                            <option value="">Primero selecciona un paciente</option>
                         </select>
                     </div>
 
                     <div class="group-input">
-                        <label for="fecha">Fecha de emisión:</label>
+                        <label for="fecha">Fecha de emisión</label>
                         <input type="date" id="fecha" name="fecha" required>
                     </div>
 
                     <div class="group-input">
-                        <label for="hora">Hora:</label>
+                        <label for="hora">Hora</label>
                         <input type="time" id="hora" name="hora" required>
                     </div>
 
+                    <div class="encabezado-medicamentos">
+                        <span>Medicamentos</span>
+                        <button type="button" id="btn-agregar-medicamento" class="btn-secundario">+ Agregar</button>
+                    </div>
+
                     <div id="lista-medicamentos">
-                        <label>Medicamentos recetados</label>
-                        <div class="bloque-medicamento grupo-input flex-fila">
-                            <input type="text" name="medicamento[]" placeholder="Medicamento (Ej. Paracetamol 500mg)" required>
-                            <input type="text" name="dosis[]" placeholder="Dosis (Ej. 1 cada 8 hrs)" required>
-                            <input type="text" name="duracion[]" placeholder="Duración (Ej. 5 días)" required>
+                        <div class="bloque-medicamento">
+                            <p class="titulo-bloque">Medicamento 1</p>
+                            <input type="text" name="medicamento[]" placeholder="Nombre del medicamento" required>
+                            <input type="text" name="dosis[]" placeholder="Dosis (ej. 500 mg)" required>
+                            <input type="text" name="duracion[]" placeholder="Duración (ej. 1 cada 8 hrs por 5 días)" required>
                         </div>
                     </div>
-                    <button type="button" id="btn-agregar-medicamento" class="btn-secundario">+ Agregar otro medicamento</button>
-                </div>          
 
-                    <button type="submit" class="btn-principal">Generar Receta</button>
+                    <button type="submit" class="btn-principal">Emitir Receta</button>
                 </form>
             </section>
 
             <section class="tarjeta-historial">
                 <h2>Recetas Emitidas</h2>
-                
-                <div class="lista-consultas">
-                    <div class="item-consulta">
-                        <div class="info-paciente">
-                            <div class="avatar">AH</div>
-                            <div>
-                                <h4>Ana Sofía Herrera</h4>
-                                <p>Paracetamol 500mg</p>
-                                <p class="subtexto">1 tableta cada 8 hrs por 5 días</p>
-                            </div>
-                        </div>
-                        <div class="estado-consulta">
-                            <span class="fecha">2026-10-21</span>
-                            <span class="etiqueta completada">Emitida</span>
-                        </div>
-                    </div>
 
-                    <div class="item-consulta">
-                        <div class="info-paciente">
-                            <div class="avatar">CM</div>
-                            <div>
-                                <h4>Carlos Mendoza Ruiz</h4>
-                                <p>Losartán 50mg</p>
-                                <p class="subtexto">1 tableta cada 24 hrs por 30 días</p>
-                            </div>
-                        </div>
-                        <div class="estado-consulta">
-                            <span class="fecha">2026-10-20</span>
-                            <span class="etiqueta completada">Emitida</span>
-                        </div>
-                    </div>
-                </div>
+         
+                <div id="lista-recetas"></div>
             </section>
+
         </div>
     </main>
 </body>
