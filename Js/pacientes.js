@@ -1,9 +1,5 @@
 /* =========================================================
-   pacientes.js — pacientes.html
-   - Lista de pacientes en la tabla principal (+ buscador)
-   - Abrir / cerrar el modal de registro
-   - Capturar el formulario y guardarlo en la base de datos
-   Requiere: db.js, global.js
+   pacientes.js — ADAPTADO PARA SUPABASE
    ========================================================= */
 
 const modal = document.getElementById('modal-nuevo-paciente');
@@ -12,13 +8,13 @@ const tituloModal = modal.querySelector('.modal-encabezado h2');
 const inputBusqueda = document.getElementById('input-busqueda');
 
 let listaPacientes = [];
-let listaConsultas = [];
-let idEditando = null; // null = nuevo paciente; con id = editar
+let listaConsultas = []; // Aquí guardaremos las citas para calcular la "última visita"
+let idEditando = null; 
 
 /* ---------------- Modal ---------------- */
 function abrirModal(paciente) {
     formPaciente.reset();
-    idEditando = paciente ? paciente.id : null;
+    idEditando = paciente ? paciente.id_paciente : null; 
     tituloModal.textContent = paciente ? 'Editar Paciente' : 'Nuevo Paciente';
 
     if (paciente) {
@@ -28,7 +24,7 @@ function abrirModal(paciente) {
         document.getElementById('pac-telefono').value = paciente.telefono || '';
         document.getElementById('pac-correo').value = paciente.correo || '';
         document.getElementById('pac-aseguradora').value = paciente.aseguradora || '';
-        document.getElementById('pac-poliza').value = paciente.poliza || '';
+        document.getElementById('pac-poliza').value = paciente.numero_poliza || ''; 
         document.getElementById('pac-direccion').value = paciente.direccion || '';
         document.getElementById('pac-alergias').value = paciente.alergias || '';
         document.getElementById('pac-contacto').value = paciente.contacto_emergencia || '';
@@ -43,12 +39,12 @@ function cerrarModal() {
     idEditando = null;
 }
 
-document.getElementById('btn-agregar-paciente').addEventListener('click', function () { abrirModal(null); });
+document.getElementById('btn-agregar-paciente').addEventListener('click', () => abrirModal(null));
 document.getElementById('btn-cerrar-modal-paciente').addEventListener('click', cerrarModal);
 document.getElementById('btn-x-modal-paciente').addEventListener('click', cerrarModal);
-// Cerrar al hacer clic fuera de la caja o con la tecla Esc
-modal.addEventListener('click', function (e) { if (e.target === modal) cerrarModal(); });
-document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.style.display === 'flex') cerrarModal(); });
+// Cerrar modal con clic afuera o con la tecla Escape
+modal.addEventListener('click', (e) => { if (e.target === modal) cerrarModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.style.display === 'flex') cerrarModal(); });
 
 /* ---------------- Guardar formulario ---------------- */
 formPaciente.addEventListener('submit', async function (e) {
@@ -61,27 +57,27 @@ formPaciente.addEventListener('submit', async function (e) {
         telefono: document.getElementById('pac-telefono').value.trim(),
         correo: document.getElementById('pac-correo').value.trim(),
         aseguradora: document.getElementById('pac-aseguradora').value.trim(),
-        poliza: document.getElementById('pac-poliza').value.trim(),
+        numero_poliza: document.getElementById('pac-poliza').value.trim(),
         direccion: document.getElementById('pac-direccion').value.trim(),
         alergias: document.getElementById('pac-alergias').value.trim(),
         contacto_emergencia: document.getElementById('pac-contacto').value.trim()
     };
 
     if (aFecha(datos.fecha_nacimiento) > new Date()) {
-        mostrarAviso('La fecha de nacimiento no puede ser futura', 'error');
+        mostrarAviso('La fecha de nacimiento no puede ser del futuro', 'error');
         return;
     }
 
     try {
         if (idEditando) {
-            await DB.actualizar('pacientes', idEditando, datos);
+            await DB.actualizar('paciente', idEditando, datos);
             mostrarAviso('Paciente actualizado');
         } else {
-            await DB.crear('pacientes', datos);
-            mostrarAviso('Paciente registrado');
+            await DB.crear('paciente', datos);
+            mostrarAviso('Paciente registrado exitosamente');
         }
         cerrarModal();
-        await cargarPacientes();
+        await cargarPacientes(); // Recarga la tabla de inmediato
     } catch (err) {
         console.error(err);
         mostrarAviso('No se pudo guardar el paciente', 'error');
@@ -90,7 +86,7 @@ formPaciente.addEventListener('submit', async function (e) {
 
 /* ---------------- Tabla ---------------- */
 function ultimaVisita(idPaciente) {
-    const suyas = listaConsultas.filter(function (c) { return String(c.paciente_id) === String(idPaciente); });
+    const suyas = listaConsultas.filter(c => String(c.id_paciente) === String(idPaciente));
     if (suyas.length === 0) return '—';
     return formatoFecha(ordenarPorFechaDesc(suyas)[0].fecha);
 }
@@ -99,44 +95,49 @@ function pintarTabla() {
     const tbody = document.getElementById('table-paciente');
     const texto = inputBusqueda.value.trim().toLowerCase();
 
-    const filtrados = listaPacientes.filter(function (p) {
+    // Filtro inteligente
+    const filtrados = listaPacientes.filter(p => {
         return !texto ||
             (p.nombre || '').toLowerCase().includes(texto) ||
             (p.aseguradora || '').toLowerCase().includes(texto);
-    }).sort(function (a, b) { return a.nombre.localeCompare(b.nombre); });
+    }).sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''));
 
     if (filtrados.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--texto-suave);">' +
-            (texto ? 'Sin resultados para "' + escaparHTML(texto) + '"' : 'Aún no hay pacientes registrados') + '</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--texto-suave);">
+            ${texto ? 'Sin resultados para "' + escaparHTML(texto) + '"' : 'Aún no hay pacientes registrados'}
+        </td></tr>`;
         return;
     }
 
-    tbody.innerHTML = filtrados.map(function (p) {
-        return '<tr>' +
-            '<td class="celda-paciente"><span class="avatar">' + escaparHTML(iniciales(p.nombre)) + '</span>' +
-                '<span class="nombre">' + escaparHTML(p.nombre) + '</span></td>' +
-            '<td>' + calcularEdad(p.fecha_nacimiento) + '</td>' +
-            '<td>' + escaparHTML(p.telefono || '—') + '</td>' +
-            '<td>' + escaparHTML(p.aseguradora || '—') + '</td>' +
-            '<td>' + escaparHTML(p.poliza || '—') + '</td>' +
-            '<td>' + ultimaVisita(p.id) + '</td>' +
-            '<td>' +
-                '<button class="btn-ver" data-id="' + escaparHTML(p.id) + '">Ver</button>' +
-                '<button class="btn-editar" data-id="' + escaparHTML(p.id) + '">Editar</button>' +
-            '</td>' +
-        '</tr>';
+    tbody.innerHTML = filtrados.map(p => {
+        return `<tr>
+            <td class="celda-paciente">
+                <span class="avatar">${escaparHTML(iniciales(p.nombre))}</span>
+                <span class="nombre">${escaparHTML(p.nombre)}</span>
+            </td>
+            <td>${calcularEdad(p.fecha_nacimiento)}</td>
+            <td>${escaparHTML(p.telefono || '—')}</td>
+            <td>${escaparHTML(p.aseguradora || '—')}</td>
+            <td>${escaparHTML(p.numero_poliza || '—')}</td>
+            <td>${ultimaVisita(p.id_paciente)}</td>
+            <td>
+                <button class="btn-ver" data-id="${escaparHTML(p.id_paciente)}">Ver</button>
+                <button class="btn-editar" data-id="${escaparHTML(p.id_paciente)}">Editar</button>
+            </td>
+        </tr>`;
     }).join('');
 }
 
-// Delegación de eventos para los botones de cada fila
+// Delegación de eventos para botones Ver/Editar
 document.getElementById('table-paciente').addEventListener('click', function (e) {
     const btn = e.target.closest('button');
     if (!btn) return;
+    
     const id = btn.dataset.id;
     if (btn.classList.contains('btn-ver')) {
         window.location.href = 'detallepaciente.html?id=' + encodeURIComponent(id);
     } else if (btn.classList.contains('btn-editar')) {
-        const paciente = listaPacientes.find(function (p) { return String(p.id) === String(id); });
+        const paciente = listaPacientes.find(p => String(p.id_paciente) === String(id));
         if (paciente) abrirModal(paciente);
     }
 });
@@ -145,10 +146,15 @@ inputBusqueda.addEventListener('input', pintarTabla);
 
 async function cargarPacientes() {
     try {
-        [listaPacientes, listaConsultas] = await Promise.all([DB.listar('pacientes'), DB.listar('consultas')]);
+        [listaPacientes, listaConsultas] = await Promise.all([
+            DB.listar('paciente'), 
+            DB.listar('cita')
+        ]);
+        
         const total = listaPacientes.length;
-        document.getElementById('header-pacientes').textContent =
-            total + (total === 1 ? ' paciente registrado' : ' pacientes registrados');
+        document.getElementById('header-pacientes').textContent = 
+            `${total} paciente${total !== 1 ? 's' : ''} registrado${total !== 1 ? 's' : ''}`;
+            
         pintarTabla();
     } catch (err) {
         console.error(err);
@@ -156,4 +162,11 @@ async function cargarPacientes() {
     }
 }
 
-cargarPacientes();
+// Mostramos el estado de carga antes de arrancar las peticiones
+document.addEventListener('DOMContentLoaded', () => {
+    const tbody = document.getElementById('table-paciente');
+    if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--texto-suave);">Cargando pacientes desde la nube... ⏳</td></tr>';
+    }
+    cargarPacientes();
+});
