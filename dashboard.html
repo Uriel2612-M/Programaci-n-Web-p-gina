@@ -33,56 +33,88 @@
     </aside>
     
     <main class="contenido-principal">
-        <header>
-            <h1><span id="saludo"></span><span id="header-name"></span></h1>
-            <h3 id="header-fecha"></h3>
+       <header class="header-dashboard">
+            <div>
+                <h1>Buenos días<span id="header-name"></span></h1>
+                <h3 id="header-fecha">Cargando fecha...</h3>
+            </div>
         </header>
 
-        <section class="tarjetas-info">
-            <div class="tarjeta">
-                <span class="icono-tarjeta"><img src="img/tarjeta-pacientes.svg" alt=""></span>
-                <p class="titulo">Total de Pacientes</p>
-                <h2 class="numero" id="dash-paciente">0</h2>
-                <p class="detalle" id="dash-paciente-detalle"></p>
-            </div>
-            <div class="tarjeta">
-                <span class="icono-tarjeta"><img src="img/tarjeta-consultas.svg" alt=""></span>
-                <p class="titulo">Consultas Hoy</p>
-                <h2 class="numero" id="dash-consultas">0</h2>
-                <p class="detalle" id="dash-consultas-detalle"></p>
-            </div>
-            <div class="tarjeta">
-                <span class="icono-tarjeta"><img src="img/tarjeta-recetas.svg" alt=""></span>
-                <p class="titulo">Recetas este mes</p>
-                <h2 class="numero" id="dash-recetas">0</h2>
-                <p class="detalle" id="dash-recetas-detalle"></p>
-            </div>
-            <div class="tarjeta">
-                <span class="icono-tarjeta rojo"><img src="img/tarjeta-pendientes.svg" alt=""></span>
-                <p class="titulo">Casos Pendientes</p>
-                <h2 class="numero" id="dash-pendientes">0</h2>
-                <p class="detalle" id="dash-pendientes-detalle"></p>
-            </div>
-        </section>
+        <!-- ================= VISTA DEL MÉDICO ================= -->
+        <div id="dashboard-medico">
+            
+            <!-- Cuadrícula de tarjetas conectada a .tarjetas-info y .tarjeta -->
+            <section class="tarjetas-info">
+                <div class="tarjeta">
+                    <h3 class="titulo">Total Pacientes</h3>
+                    <p class="numero" id="dash-paciente">0</p>
+                    <span class="detalle" id="dash-paciente-detalle">Cargando...</span>
+                </div>
+                <div class="tarjeta">
+                    <h3 class="titulo">Consultas Hoy</h3>
+                    <p class="numero" id="dash-consultas">0</p>
+                    <span class="detalle" id="dash-consultas-detalle">Cargando...</span>
+                </div>
+                <div class="tarjeta">
+                    <h3 class="titulo">Recetas Emitidas</h3>
+                    <p class="numero" id="dash-recetas">0</p>
+                    <span class="detalle" id="dash-recetas-detalle">Cargando...</span>
+                </div>
+                <div class="tarjeta">
+                    <h3 class="titulo">Casos Pendientes</h3>
+                    <p class="numero" id="dash-pendientes">0</p>
+                    <span class="detalle" id="dash-pendientes-detalle">Cargando...</span>
+                </div>
+            </section>
 
-        <section class="tabla">
-            <div class="encabezado-tabla">
-                <h2>Pacientes recientes</h2>
-                <button id="btn-ver-todos" onclick="window.location.href='pacientes.html'">Ver todos ></button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Paciente</th>
-                        <th>Aseguradora</th>
-                        <th>Última Consulta</th>
-                        <th>Estado</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="table-resumen"></tbody>
-            </table>
-        </section>
+            <!-- Sección inferior conectada a .tabla y .encabezado-tabla -->
+            <section class="tabla">
+                <div class="encabezado-tabla">
+                    <h2>Actividad Reciente</h2>
+                    <button id="btn-ver-todos" onclick="window.location.href='pacientes.html'">Ver todos</button>
+                </div>
+                <table class="tabla-datos">
+                    <thead>
+                        <tr>
+                            <th>PACIENTE</th>
+                            <th>ASEGURADORA</th>
+                            <th>ÚLTIMA VISITA</th>
+                            <th>ESTADO</th>
+                            <th>ACCIÓN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-resumen">
+                        <tr><td colspan="5" style="text-align:center;color:var(--texto-suave);">Cargando datos... ⏳</td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <!-- ================= VISTA DEL PACIENTE ================= -->
+        <div id="dashboard-paciente" style="display: none;">
+            <!-- Usamos .tabla para heredar el fondo blanco y bordes redondeados -->
+            <section class="tabla" style="text-align: center; padding: 60px 20px;">
+                <h2 style="color: var(--teal-oscuro); margin-bottom: 10px;">Bienvenido a tu Portal Médico</h2>
+                <p id="pac-estado-expediente" style="color: var(--texto-suave); font-size: 15px; margin-bottom: 30px;">
+                    Buscando tu expediente en la clínica... ⏳
+                </p>
+
+                <!-- Tarjeta de próxima cita -->
+                <div id="pac-tarjeta-cita" style="display: none; background: var(--teal-suave); border: 1px solid var(--teal); border-radius: 12px; padding: 25px; max-width: 400px; margin: 0 auto; text-align: left;">
+                    <h3 style="margin-top:0; color: var(--teal-oscuro); font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">📅 Tu próxima cita</h3>
+                    <p style="font-size: 22px; font-weight: bold; margin: 15px 0 5px;" id="pac-fecha-cita">--</p>
+                    <p style="font-size: 16px; color: var(--texto); margin: 0;" id="pac-hora-cita">--</p>
+                    <hr style="border: 0; border-top: 1px solid #d0ebe7; margin: 15px 0;">
+                    <p style="font-size: 14px; color: var(--texto-suave); margin: 0;"><strong>Estado:</strong> <span class="etiqueta completada">Confirmada</span></p>
+                </div>
+
+                <!-- Mensaje alternativo si no hay citas -->
+                <div id="pac-sin-citas" style="display: none; margin-top: 20px;">
+                    <p style="font-size: 16px; font-weight: 600; color: var(--texto);">No tienes citas próximas programadas.</p>
+                    <button class="btn-principal" style="margin-top: 15px; padding: 10px 24px; width:auto;">Solicitar una cita</button>
+                </div>
+            </section>
+        </div>
     </main>
     <script src="js/fecha.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

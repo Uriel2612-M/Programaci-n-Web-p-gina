@@ -1,84 +1,59 @@
 /* =========================================================
-   configuracion.js — configuracion.html
-   - Precargar los datos de la clínica en los campos
-   - Guardar los cambios al enviar el formulario
-   - Los toggles de notificaciones guardan su estado al cambiar
-   Requiere: db.js, global.js
+   configuracion.js — Ajustes de la clínica y notificaciones
+   (Se guarda en LocalStorage mediante db.js)
    ========================================================= */
 
-const CAMPOS_CONFIG = {
-    nombre: 'conf-nombre',
-    medico: 'conf-medico',
-    especialidad: 'conf-especialidad',
-    cedula: 'conf-cedula',
-    telefono: 'conf-telefono',
-    direccion: 'conf-direccion'
-};
+const formConfig = document.getElementById('form-configuracion');
 
-const TOGGLES = {
-    recordatorios: 'noti-recordatorios',
-    seguimiento: 'noti-seguimiento',
-    resumen: 'noti-resumen',
-    vencidas: 'noti-vencidas'
-};
-
-let configActual = null;
-
-/* ---------------- Precargar ---------------- */
-async function cargarConfiguracion() {
-    configActual = await DB.obtenerConfig();
-
-    // Si no hay médico guardado, se usa el nombre del usuario en sesión
-    const sesion = obtenerSesion();
-    if (!configActual.medico && sesion && sesion.rol === 'Doctor') configActual.medico = sesion.nombre;
-
-    Object.keys(CAMPOS_CONFIG).forEach(function (llave) {
-        document.getElementById(CAMPOS_CONFIG[llave]).value = configActual[llave] || '';
-    });
-
-    const notis = configActual.notificaciones || {};
-    Object.keys(TOGGLES).forEach(function (llave) {
-        document.getElementById(TOGGLES[llave]).checked = !!notis[llave];
-    });
-}
-
-/* ---------------- Guardar datos de la clínica ---------------- */
-document.getElementById('form-configuracion').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const cambios = {};
-    Object.keys(CAMPOS_CONFIG).forEach(function (llave) {
-        cambios[llave] = document.getElementById(CAMPOS_CONFIG[llave]).value.trim();
-    });
-
+// 1. Cargar datos apenas abra la pantalla
+document.addEventListener('DOMContentLoaded', async () => {
     try {
-        configActual = Object.assign({}, configActual, cambios);
-        await DB.guardarConfig(configActual);
-        mostrarAviso('Cambios guardados');
+        const config = await DB.obtenerConfig();
+
+        // Llenar campos de texto (si existen datos previos)
+        if (config.nombre) document.getElementById('conf-nombre').value = config.nombre;
+        if (config.medico) document.getElementById('conf-medico').value = config.medico;
+        if (config.especialidad) document.getElementById('conf-especialidad').value = config.especialidad;
+        if (config.cedula) document.getElementById('conf-cedula').value = config.cedula;
+        if (config.telefono) document.getElementById('conf-telefono').value = config.telefono;
+        if (config.direccion) document.getElementById('conf-direccion').value = config.direccion;
+
+        // Llenar los "switches" de notificaciones
+        document.getElementById('noti-recordatorios').checked = !!config.notiRecordatorios;
+        document.getElementById('noti-seguimiento').checked = !!config.notiSeguimiento;
+        document.getElementById('noti-resumen').checked = !!config.notiResumen;
+        document.getElementById('noti-vencidas').checked = !!config.notiVencidas;
+        
     } catch (err) {
-        console.error(err);
-        mostrarAviso('No se pudieron guardar los cambios', 'error');
+        console.error("Error al cargar la configuración:", err);
     }
 });
 
-/* ---------------- Toggles de notificaciones ---------------- */
-Object.keys(TOGGLES).forEach(function (llave) {
-    const toggle = document.getElementById(TOGGLES[llave]);
-    toggle.addEventListener('change', async function () {
-        try {
-            configActual.notificaciones = Object.assign({}, configActual.notificaciones, { [llave]: toggle.checked });
-            await DB.guardarConfig(configActual);
-            mostrarAviso(toggle.checked ? 'Notificación activada' : 'Notificación desactivada');
-        } catch (err) {
-            console.error(err);
-            toggle.checked = !toggle.checked; // se regresa si falló
-            mostrarAviso('No se pudo guardar la preferencia', 'error');
-        }
-    });
-});
+// 2. Guardar datos al enviar el formulario
+formConfig.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-cargarConfiguracion().catch(function (err) {
-    console.error(err);
-    mostrarAviso('No se pudo cargar la configuración', 'error');
+    const nuevaConfig = {
+        // Textos
+        nombre: document.getElementById('conf-nombre').value.trim(),
+        medico: document.getElementById('conf-medico').value.trim(),
+        especialidad: document.getElementById('conf-especialidad').value.trim(),
+        cedula: document.getElementById('conf-cedula').value.trim(),
+        telefono: document.getElementById('conf-telefono').value.trim(),
+        direccion: document.getElementById('conf-direccion').value.trim(),
+        
+        // Switches (true o false)
+        notiRecordatorios: document.getElementById('noti-recordatorios').checked,
+        notiSeguimiento: document.getElementById('noti-seguimiento').checked,
+        notiResumen: document.getElementById('noti-resumen').checked,
+        notiVencidas: document.getElementById('noti-vencidas').checked
+    };
+
+    try {
+        await DB.guardarConfig(nuevaConfig);
+        mostrarAviso('Configuración de clínica actualizada');
+    } catch (err) {
+        console.error("Error al guardar:", err);
+        mostrarAviso('Error al guardar la configuración', 'error');
+    }
 });
-    

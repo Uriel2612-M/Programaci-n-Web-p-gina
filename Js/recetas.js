@@ -1,5 +1,5 @@
 /* =========================================================
-   recetas.js — ADAPTADO PARA SUPABASE (3 Tablas Normalizadas)
+   recetas.js — ADAPTADO PARA ROLES (Seguridad y 3 Tablas)
    ========================================================= */
 
 const formReceta = document.querySelector('.formulario-consulta form');
@@ -9,13 +9,10 @@ const listaMedicamentos = document.getElementById('lista-medicamentos');
 
 let pacientesReceta = [];
 let consultasReceta = []; 
+let rolActual = localStorage.getItem('rolUsuario');
+let idPacienteFiltro = null;
 
-function nombreDePaciente(id) {
-    const p = pacientesReceta.find(x => String(x.id_paciente) === String(id));
-    return p ? p.nombre : 'Paciente eliminado';
-}
-
-/* ---------------- Selectores ---------------- */
+/* ---------------- Selectores (Solo para Médico) ---------------- */
 function llenarPacientes() {
     selPaciente.innerHTML = '<option value="">Seleccionar paciente...</option>' +
         pacientesReceta.map(p => `<option value="${escaparHTML(p.id_paciente)}">${escaparHTML(p.nombre)}</option>`).join('');
@@ -57,9 +54,9 @@ function actualizarConsultas() {
     if (citasConConsulta.length === 1) selConsulta.selectedIndex = 1;
 }
 
-selPaciente.addEventListener('change', actualizarConsultas);
+if (selPaciente) selPaciente.addEventListener('change', actualizarConsultas);
 
-/* ---------------- Medicamentos dinámicos ---------------- */
+/* ---------------- Medicamentos dinámicos (Solo Médico) ---------------- */
 function renumerarMedicamentos() {
     const bloques = listaMedicamentos.querySelectorAll('.bloque-medicamento');
     bloques.forEach((bloque, i) => {
@@ -95,7 +92,8 @@ function agregarMedicamento() {
     nuevo.querySelector('input').focus();
 }
 
-document.getElementById('btn-agregar-medicamento').addEventListener('click', agregarMedicamento);
+const btnAgregarMed = document.getElementById('btn-agregar-medicamento');
+if (btnAgregarMed) btnAgregarMed.addEventListener('click', agregarMedicamento);
 
 function reiniciarMedicamentos() {
     const bloques = listaMedicamentos.querySelectorAll('.bloque-medicamento');
@@ -103,104 +101,97 @@ function reiniciarMedicamentos() {
     renumerarMedicamentos();
 }
 
-/* ---------------- Guardar receta (Lógica de 3 tablas) ---------------- */
-formReceta.addEventListener('submit', async function (e) {
-    e.preventDefault();
+/* ---------------- Guardar receta (Solo Médico) ---------------- */
+if (formReceta) {
+    formReceta.addEventListener('submit', async function (e) {
+        e.preventDefault();
 
-    const id_consulta = selConsulta.value;
-    const medicamentosCapturados = Array.from(listaMedicamentos.querySelectorAll('.bloque-medicamento')).map(b => ({
-        nombre_comercial: b.querySelector('input[name="medicamento[]"]').value.trim(),
-        dosis: b.querySelector('input[name="dosis[]"]').value.trim(),
-        duracion: b.querySelector('input[name="duracion[]"]').value.trim() 
-    })).filter(m => m.nombre_comercial);
+        const id_consulta = selConsulta.value;
+        const medicamentosCapturados = Array.from(listaMedicamentos.querySelectorAll('.bloque-medicamento')).map(b => ({
+            nombre_comercial: b.querySelector('input[name="medicamento[]"]').value.trim(),
+            dosis: b.querySelector('input[name="dosis[]"]').value.trim(),
+            duracion: b.querySelector('input[name="duracion[]"]').value.trim() 
+        })).filter(m => m.nombre_comercial);
 
-    if (!selPaciente.value || !id_consulta) {
-        mostrarAviso('Selecciona paciente y consulta válida', 'error');
-        return;
-    }
-    if (medicamentosCapturados.length === 0) {
-        mostrarAviso('Agrega al menos un medicamento', 'error');
-        return;
-    }
-
-    try {
-        // PASO 1: Crear la Receta
-        const nuevaReceta = {
-            id_consulta: id_consulta,
-            fecha_emision: document.getElementById('fecha').value
-        };
-        const recetaGuardada = await DB.crear('receta', nuevaReceta);
-
-        // PASO 2: Procesar medicamentos (Buscar o Crear) para armar los Detalles
-        const detallesAInsertar = [];
-        
-        for (const med of medicamentosCapturados) {
-            let idMed = null;
-            
-            // Verificamos si el medicamento ya existe (sin importar mayúsculas/minúsculas)
-            const { data: medExistente, error: errBusqueda } = await supabaseClient
-                .from('medicamento')
-                .select('id_medicamento')
-                .ilike('nombre_comercial', med.nombre_comercial)
-                .maybeSingle();
-
-            if (medExistente) {
-                idMed = medExistente.id_medicamento;
-            } else {
-                // Si no existe, lo agregamos al catálogo
-                const { data: medNuevo, error: errCreacion } = await supabaseClient
-                    .from('medicamento')
-                    .insert([{ 
-                        nombre_comercial: med.nombre_comercial, 
-                        dosis_recomendada: med.dosis // Guardamos la dosis como la recomendada inicial
-                    }])
-                    .select()
-                    .single();
-                
-                if (errCreacion) throw errCreacion;
-                idMed = medNuevo.id_medicamento;
-            }
-
-            // Preparamos el cruce para detalle_receta
-            detallesAInsertar.push({
-                id_receta: recetaGuardada.id_receta,
-                id_medicamento: idMed,
-                dosis: med.dosis,
-                duracion: med.duracion
-            });
+        if (!selPaciente.value || !id_consulta) {
+            mostrarAviso('Selecciona paciente y consulta válida', 'error');
+            return;
+        }
+        if (medicamentosCapturados.length === 0) {
+            mostrarAviso('Agrega al menos un medicamento', 'error');
+            return;
         }
 
-        // PASO 3: Insertar todos los medicamentos en la tabla detalle_receta
-        const { error: errorDetalle } = await supabaseClient
-            .from('detalle_receta')
-            .insert(detallesAInsertar);
+        try {
+            // 1: Crear la Receta
+            const nuevaReceta = {
+                id_consulta: id_consulta,
+                fecha_emision: document.getElementById('fecha').value
+            };
+            const recetaGuardada = await DB.crear('receta', nuevaReceta);
+
+            // 2: Procesar medicamentos 
+            const detallesAInsertar = [];
             
-        if (errorDetalle) throw errorDetalle;
+            for (const med of medicamentosCapturados) {
+                let idMed = null;
+                const { data: medExistente, error: errBusqueda } = await supabaseClient
+                    .from('medicamento')
+                    .select('id_medicamento')
+                    .ilike('nombre_comercial', med.nombre_comercial)
+                    .maybeSingle();
 
-        mostrarAviso('Receta emitida exitosamente');
-        formReceta.reset();
-        reiniciarMedicamentos();
-        actualizarConsultas();
-        valoresPorDefectoReceta();
-        await pintarRecetasRecientes();
-    } catch (err) {
-        console.error(err);
-        mostrarAviso('No se pudo emitir la receta', 'error');
-    }
-});
+                if (medExistente) {
+                    idMed = medExistente.id_medicamento;
+                } else {
+                    const { data: medNuevo, error: errCreacion } = await supabaseClient
+                        .from('medicamento')
+                        .insert([{ nombre_comercial: med.nombre_comercial, dosis_recomendada: med.dosis }])
+                        .select()
+                        .single();
+                    if (errCreacion) throw errCreacion;
+                    idMed = medNuevo.id_medicamento;
+                }
 
-function valoresPorDefectoReceta() {
-    document.getElementById('fecha').value = hoyISO();
-    document.getElementById('hora').value = horaActual();
+                detallesAInsertar.push({
+                    id_receta: recetaGuardada.id_receta,
+                    id_medicamento: idMed,
+                    dosis: med.dosis,
+                    duracion: med.duracion
+                });
+            }
+
+            // 3: Insertar detalles
+            const { error: errorDetalle } = await supabaseClient.from('detalle_receta').insert(detallesAInsertar);
+            if (errorDetalle) throw errorDetalle;
+
+            mostrarAviso('Receta emitida exitosamente');
+            formReceta.reset();
+            reiniciarMedicamentos();
+            actualizarConsultas();
+            valoresPorDefectoReceta();
+            await pintarRecetasRecientes();
+        } catch (err) {
+            console.error(err);
+            mostrarAviso('No se pudo emitir la receta', 'error');
+        }
+    });
 }
 
-/* ---------------- Recetas recientes (JOIN con 3 tablas) ---------------- */
+function valoresPorDefectoReceta() {
+    const inputFecha = document.getElementById('fecha');
+    const inputHora = document.getElementById('hora');
+    if (inputFecha) inputFecha.value = hoyISO();
+    if (inputHora) inputHora.value = horaActual();
+}
+
+/* ---------------- Recetas (Lectura con filtro de seguridad) ---------------- */
 async function pintarRecetasRecientes() {
     const contenedor = document.getElementById('lista-recetas');
+    contenedor.innerHTML = '<p style="padding:18px 24px;font-size:13px;color:var(--texto-suave);">Cargando recetas... ⏳</p>';
     
     try {
-        // Hacemos el JOIN pasando por detalle_receta hasta el catálogo de medicamento
-        const { data: recetasBD, error } = await supabaseClient
+        let query = supabaseClient
             .from('receta')
             .select(`
                 id_receta, fecha_emision,
@@ -210,17 +201,25 @@ async function pintarRecetasRecientes() {
                 ),
                 consulta!inner(
                     cita!inner(
+                        id_paciente,
                         paciente!inner(nombre)
                     )
                 )
             `)
             .order('id_receta', { ascending: false })
-            .limit(10);
+            .limit(rolActual === 'paciente' ? 30 : 10);
+
+        // APLICAMOS EL FILTRO ESTRICTO SI ES PACIENTE
+        if (rolActual === 'paciente' && idPacienteFiltro) {
+            query = query.eq('consulta.cita.id_paciente', idPacienteFiltro);
+        }
+
+        const { data: recetasBD, error } = await query;
 
         if (error) throw error;
 
         if (!recetasBD || recetasBD.length === 0) {
-            contenedor.innerHTML = '<p style="padding:18px 24px;font-size:13px;color:var(--texto-suave);">Aún no se han emitido recetas.</p>';
+            contenedor.innerHTML = '<p style="padding:18px 24px;font-size:13px;color:var(--texto-suave);">Aún no hay recetas emitidas.</p>';
             return;
         }
 
@@ -243,33 +242,57 @@ async function pintarRecetasRecientes() {
         }).join('');
     } catch (err) {
         console.error("Error al cargar recetas recientes:", err);
+        contenedor.innerHTML = '<p style="padding:18px 24px;font-size:13px;color:#d6455d;">Error al cargar datos.</p>';
     }
 }
 
-/* ---------------- Arranque ---------------- */
+/* ---------------- Arranque inteligente por Roles ---------------- */
 (async function iniciarRecetas() {
     try {
-        prepararBloque(listaMedicamentos.querySelector('.bloque-medicamento'));
-        renumerarMedicamentos();
-        valoresPorDefectoReceta();
+        if (rolActual === 'paciente') {
+            // 1. Ocultar el formulario izquierdo completo
+            if (formReceta) {
+                const tarjetaForm = formReceta.closest('.tarjeta-formulario') || formReceta.parentElement;
+                if (tarjetaForm) tarjetaForm.style.display = 'none';
+                
+                // Romper la cuadrícula para que la lista ocupe toda la pantalla
+                const contenedorDosColumnas = document.querySelector('.contenedor-dos-columnas');
+                if (contenedorDosColumnas) contenedorDosColumnas.style.display = 'block';
+            }
 
-        const [reqPacientes, reqCitas] = await Promise.all([
-            supabaseClient.from('paciente').select('id_paciente, nombre'),
-            supabaseClient.from('cita').select('id_cita, id_paciente, fecha, hora, consulta(id_consulta, diagnostico)')
-        ]);
+            // 2. Buscar ID del paciente
+            const { data: authData } = await supabaseClient.auth.getUser();
+            if (authData.user) {
+                const { data: pacienteBD } = await supabaseClient
+                    .from('paciente')
+                    .select('id_paciente')
+                    .ilike('correo', authData.user.email)
+                    .maybeSingle();
 
-        if (reqPacientes.error) throw reqPacientes.error;
-        if (reqCitas.error) throw reqCitas.error;
+                if (pacienteBD) idPacienteFiltro = pacienteBD.id_paciente;
+            }
+        } else {
+            // Si es Médico, inicializamos los selects y el formulario
+            if (listaMedicamentos) prepararBloque(listaMedicamentos.querySelector('.bloque-medicamento'));
+            renumerarMedicamentos();
+            valoresPorDefectoReceta();
 
-        pacientesReceta = reqPacientes.data.sort((a, b) => a.nombre.localeCompare(b.nombre));
-        consultasReceta = reqCitas.data;
+            const [reqPacientes, reqCitas] = await Promise.all([
+                supabaseClient.from('paciente').select('id_paciente, nombre'),
+                supabaseClient.from('cita').select('id_cita, id_paciente, fecha, hora, consulta(id_consulta, diagnostico)')
+            ]);
 
-        llenarPacientes();
+            if (!reqPacientes.error && !reqCitas.error) {
+                pacientesReceta = reqPacientes.data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+                consultasReceta = reqCitas.data;
+                llenarPacientes();
+                const pre = parametroURL('paciente');
+                if (pre) selPaciente.value = pre;
+                actualizarConsultas();
+            }
+        }
 
-        const pre = parametroURL('paciente');
-        if (pre) selPaciente.value = pre;
-        actualizarConsultas();
-
+        // Pintar la lista (ya viene con filtro inyectado)
         await pintarRecetasRecientes();
     } catch (err) {
         console.error(err);
