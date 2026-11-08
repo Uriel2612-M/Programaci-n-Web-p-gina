@@ -111,3 +111,26 @@ async function cerrarSesion() {
     localStorage.clear();
     window.location.href = 'index.html';
 }
+
+/* =========================================================
+   PROTECCIÓN DE RUTAS Y MENÚ LATERAL (ROLES)
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    const rol = localStorage.getItem('rolUsuario');
+
+    if (rol === 'paciente') {
+        // 1. Ocultar botones del menú lateral buscando por su "href"
+        const btnPacientes = document.querySelector('a[href="pacientes.html"]');
+        const btnConfiguracion = document.querySelector('a[href="configuracion.html"]');
+
+        // Ocultamos todo el <li> que contiene al enlace
+        if (btnPacientes) btnPacientes.parentElement.style.display = 'none';
+        if (btnConfiguracion) btnConfiguracion.parentElement.style.display = 'none';
+
+        // 2. Candado de URL (Redirección forzada)
+        const rutaActual = window.location.pathname.toLowerCase();
+        if (rutaActual.includes('pacientes.html') || rutaActual.includes('configuracion.html')) {
+            window.location.replace('dashboard.html');
+        }
+    }
+});
