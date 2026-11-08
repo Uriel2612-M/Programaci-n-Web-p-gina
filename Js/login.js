@@ -1,41 +1,47 @@
 /* =========================================================
-   login.js — index.html
-   Guarda la sesión (nombre + rol) para que la barra lateral
-   pueda mostrarla. En modo servidor valida contra la API.
-   Requiere: db.js, global.js
+   index.js — LOGIN CON SUPABASE
    ========================================================= */
+const formLogin = document.getElementById('login-form');
 
-const ROLES = { '1': 'Doctor', '2': 'Paciente' };
+formLogin.addEventListener('submit', async function(evento) {
+    evento.preventDefault(); 
 
-document.getElementById('login-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const rol = document.getElementById('login-rol').value;
-    const usuario = document.getElementById('login-usuario').value.trim();
+    const rolValor = document.getElementById('login-rol').value;
+    const correo = document.getElementById('login-usuario').value;
     const password = document.getElementById('login-password').value;
 
-    if (!rol || !usuario || !password) {
-        mostrarAviso('Completa todos los campos', 'error');
-        return;
-    }
+    try {    
+        // Validamos directo con Supabase Auth
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: correo,
+            password: password,
+        });
 
-    try {
-        let datosUsuario = { nombre: usuario, rol: ROLES[rol] || 'Usuario', rol_id: rol };
-
-        // Si hay servidor, se valida el usuario contra la API (POST {API_URL}/login)
-        if (DB_CONFIG.API_URL) {
-            const resp = await fetch(DB_CONFIG.API_URL.replace(/\/$/, '') + '/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usuario: usuario, password: password, rol: rol })
-            });
-            if (!resp.ok) throw new Error('Usuario o contraseña incorrectos');
-            datosUsuario = await resp.json(); // se espera { nombre, rol }
+        if (error) {
+            alert("Error al iniciar sesión: Credenciales incorrectas o usuario no registrado.");
+            console.error("Detalle del error:", error.message);
+            return;
         }
+                
+        // 1. Convertimos el valor numérico al texto que usa el código de la interfaz
+        const nombreRol = (rolValor === "1") ? "Doctor" : "Paciente";
+        
+        // 2. Armamos la "cápsula" de datos exactamente como la pide el global.js
+        const datosSesion = {
+            nombre: correo.split('@')[0], // Truco: usamos la primera parte del correo como nombre
+            rol: nombreRol
+        };
 
-        guardarSesion(datosUsuario);
+        // 3. Guardamos la variable que exige la barra lateral
+        localStorage.setItem('medagenda_sesion', JSON.stringify(datosSesion));
+        
+        // 4. Guardamos nuestra variable para ocultar los menús según el rol
+        localStorage.setItem('rolUsuario', nombreRol.toLowerCase());
+
+        alert("¡Acceso concedido!");
         window.location.href = 'dashboard.html';
+
     } catch (err) {
-        mostrarAviso(err.message, 'error');
+        console.error("Error de conexión:", err);
     }
 });

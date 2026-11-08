@@ -81,3 +81,4 @@ cargarConfiguracion().catch(function (err) {
     console.error(err);
     mostrarAviso('No se pudo cargar la configuración', 'error');
 });
+    
