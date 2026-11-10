@@ -167,3 +167,75 @@ function pintarTablaResumen(pacientes, citas) {
         </tr>`;
     }).join('');
 }
+
+/* =========================================================
+   MODAL DE SOLICITAR CITA (PACIENTE)
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    const btnAbrir = document.getElementById('btn-abrir-cita');
+    const modalCita = document.getElementById('modal-solicitar-cita');
+    const btnCerrar = document.getElementById('btn-cerrar-cita');
+    const formCita = document.getElementById('form-solicitar-cita');
+
+    if (btnAbrir && modalCita) {
+        // Abrir modal y sugerir la fecha de hoy
+        btnAbrir.addEventListener('click', () => {
+            modalCita.style.display = 'flex';
+            document.getElementById('cita-fecha').value = hoyISO();
+        });
+
+        // Cerrar modal
+        btnCerrar.addEventListener('click', () => {
+            modalCita.style.display = 'none';
+        });
+
+        // Guardar la cita
+        formCita.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btnGuardar = document.getElementById('btn-guardar-cita');
+            const textoOriginal = btnGuardar.textContent;
+            btnGuardar.textContent = 'Enviando... ⏳';
+            btnGuardar.disabled = true;
+
+            try {
+                // 1. Obtenemos el correo del paciente logueado
+                const { data: authData } = await supabaseClient.auth.getUser();
+                
+                // 2. Buscamos su ID real en la tabla paciente
+                const { data: pacienteBD, error: errPac } = await supabaseClient
+                    .from('paciente')
+                    .select('id_paciente')
+                    .ilike('correo', authData.user.email)
+                    .single();
+
+                if (errPac || !pacienteBD) throw new Error("No se encontró el expediente del paciente.");
+
+                // 3. Armamos la cita para Supabase
+                const nuevaCita = {
+                    id_paciente: pacienteBD.id_paciente,
+                    fecha: document.getElementById('cita-fecha').value,
+                    hora: document.getElementById('cita-hora').value,
+                    estado: 'Pendiente' // El doctor verá que está pendiente
+                };
+
+                // 4. Insertamos en la tabla cita
+                const { error } = await supabaseClient.from('cita').insert([nuevaCita]);
+
+                if (error) throw error;
+
+                mostrarAviso('Cita solicitada correctamente.');
+                modalCita.style.display = 'none';
+                
+                // Recargamos la página para que desaparezca el botón y le muestre su tarjeta de cita confirmada
+                setTimeout(() => location.reload(), 1500);
+
+            } catch (err) {
+                console.error(err);
+                mostrarAviso('Error al solicitar la cita', 'error');
+                btnGuardar.textContent = textoOriginal;
+                btnGuardar.disabled = false;
+            }
+        });
+    }
+});
